@@ -1,19 +1,23 @@
 import express from 'express'
-import mongoose from 'mongoose'
 import cors from 'cors'
+import bodyParser from 'body-parser'
+import TransactionRouter from './api/Transaction.js'
+import connect from './mongoDB/config.js'
 
 const app = express()
+// mongodb connection
+ connect()
 
-app.use(cors);
+// middlewares
+app.use(cors());
+app.use(bodyParser.json())
 
-mongoose.connect("mongodb+srv://guitadharsh:guitadharsh@cluster1.nujfv.mongodb.net/?retryWrites=true&w=majority")
-.then(()=>{console.log("database connected succesfully")})
-.catch((err)=> {console.log(err)})
-
-
+// routers
 app.get('/', (req, res) => {
-    console.log("Hello World")
+    console.log('initial request')
 })
+
+app.use('/transaction', TransactionRouter)
 
 
 app.listen(8000, ()=>{console.log('server is running')})
